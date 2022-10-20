@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import IndexView from "../views/IndexView.vue";
 import Index2View from "../views/Index2View.vue";
-import { from } from "core-js/core/array";
 
 // 懒加载方式2
 const HelloWorld = () => import("../components/HelloWorld.vue");
@@ -73,15 +72,15 @@ const router = new VueRouter({
 
 // 全局导航守卫
 //前置守卫
-router.beforeEach((to, from, next) => {
-  // 从from跳转到to
-  document.title = to.matched[0].meta.title; //位页面赋值title
-  //必须要有next才会跳转
-  // next();
-  next("/login");
-});
+// router.beforeEach((to, from, next) => {
+//   // 从from跳转到to
+//   document.title = to.matched[0].meta.title; //位页面赋值title
+//   //必须要有next才会跳转
+//   // next();
+//   next("/login");
+// });
 //后置钩子
-router.afterEach((to, from) => {});
+// router.afterEach((to, from) => {});
 
 // 导出router对象
 export default router;

@@ -18,6 +18,15 @@
       <button @click="IndexView">index</button>
       <button @click="Index2View">index2</button> |
       <router-link to="/hello" replace>hello</router-link>
+      <h2>------Vuex状态管理------</h2>
+      <div>{{ $store.state.count }}</div>
+      <button @click="addition">+</button>
+      <button @click="subtraction">-</button>
+      <button @click="addNum(10)">+10</button>
+      <div>{{ $store.getters.powerCounter }}</div>
+      <!-- 将$store.getters.stdAgemore当成一个函数，加括号传值 -->
+      <div>{{ $store.getters.stdAgemore(14) }}</div>
+      <button @click="UploadInfo">异步修改state状态数据</button>
     </nav>
     <router-view />
   </div>
@@ -57,6 +66,36 @@ export default {
           username: this.username,
         },
       });
+    },
+    //Vuex
+    //需要修改时，调用mutations内的方法来修改
+    addition() {
+      this.$store.commit("increment");
+    },
+    subtraction() {
+      this.$store.commit("decrement");
+    },
+    addNum(count) {
+      //1.普通提交风格
+      // this.$store.commit("addnum", count);
+      //2.特殊提交封装
+      this.$store.commit({
+        type: "decrement",
+        count,
+      });
+    },
+    //payload（负载）
+    addStd() {
+      const std = { id: 4, name: "eee", age: 6 };
+      this.$store.commit("addStdmore", std);
+    },
+    //异步修改数据
+    UploadInfo() {
+      // this.$store.dispatch("UploadInfo", '我是需要传入的payload');
+      //当运行完成需要传过来信息时，action内使用了promise
+      this.$store.dispatch("UploadInfo", '我是需要传入的payload').then(res=>{
+        console.log(res);
+      })
     },
   },
 };
