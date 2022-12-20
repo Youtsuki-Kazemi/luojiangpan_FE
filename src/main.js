@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router"; //引入router路由对象
 import store from "./store"; //引入vuex状态管理对象
-import axios from "axios"; //映入axios网络请求框架
+// import axios from "axios"; //映入axios网络请求框架
 import ElementUI from "element-ui"; //引入element-ui框架
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -14,6 +14,12 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app"); //相当于挂载el:'#app'
+
+// 判断主题
+const theme = window.localStorage.getItem("theme");
+if (!theme) {
+  window.localStorage.setItem("theme", "spring");
+}
 
 // axios({
 //   url: "http://192.168.0.106:8999/name/returnmanname",
@@ -28,32 +34,32 @@ new Vue({
 // }).then((res) => {
 //   console.log(res);
 // });
+//------------
+// axios.defaults.baseURL = "http://192.168.0.106:8999";
+// axios.defaults.timeout = 5000;
+// axios({
+//   url: "/name/returnmanname",
+//   params: {
+//     last_name: "陈",
+//     num: 1,
+//     len: 3,
+//   },
+// }).then((res) => {
+//   console.log(res);
+// });
 
-axios.defaults.baseURL = "http://192.168.0.106:8999";
-axios.defaults.timeout = 5000;
-axios({
-  url: "/name/returnmanname",
-  params: {
-    last_name: "陈",
-    num: 1,
-    len: 3,
-  },
-}).then((res) => {
-  console.log(res);
-});
-
-import { request } from "../network/request";
-request({
-  url: "/name/returnmanname",
-  params: {
-    last_name: "陈",
-    num: 1,
-    len: 3,
-  },
-})
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// import { request } from "../network/request";
+// request({
+//   url: "/name/returnmanname",
+//   params: {
+//     last_name: "陈",
+//     num: 1,
+//     len: 3,
+//   },
+// })
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });

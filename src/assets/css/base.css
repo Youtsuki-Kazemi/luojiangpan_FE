@@ -1,0 +1,148 @@
+@import "./reset.css";
+
+/* :root伪类，获取根元素html */
+/* 定义变量：--变量名 */
+/* 使用变量：var(变量名) */
+:root {
+  /* 默认主题颜色 */
+  --body-color: #f5fffb;
+  --sidebar-color: #fff;
+  --sidebar-text-color: #fff;
+  --primary-color: #66cc99;
+  --primary-color-light: #ccffcc;
+  /* --deep-color: #f6f5ff; */
+  --deep-color: #e9f3e9;
+  --toggle-color: #ddd;
+  --label-color: #fafafa;
+  --text-color: #707070;
+  --text-color-2: #fff;
+  /*  */
+  --font-size: 14px;
+  --line-height: 1.5;
+
+  /* 过渡效果 */
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-03);
+}
+/* 夜间主题颜色 */
+body.dark {
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --sidebar-text-color: #ccc;
+  --primary-color: #3a3b3c;
+  --primary-color-light: #4c4e4f;
+  --deep-color: #1a1b1c;
+  --toggle-color: #fff;
+  --label-color: #333333;
+  --text-color: #ccc;
+  --text-color-2: #cccccc70;
+}
+/* 春主题颜色 */
+body.spring {
+  --body-color: #f5fffb;
+  --sidebar-color: #fff;
+  --sidebar-text-color: #fff;
+  --primary-color: #66cc99;
+  --primary-color-light: #ccffcc;
+  --deep-color: #e9f3e9;
+  --toggle-color: #ddd;
+  --label-color: #fafafa;
+  --text-color: #707070;
+  --text-color-2: #fff;
+}
+/* 夏主题颜色 */
+body.summer {
+  --body-color: #fffbf7;
+  --sidebar-color: #fff;
+  --sidebar-text-color: #fff;
+  --primary-color: #edb174;
+  --primary-color-light: #ffe3c7;
+  --deep-color: #f0ebe4;
+  --toggle-color: #ddd;
+  --label-color: #fafafa;
+  --text-color: #707070;
+  --text-color-2: #fff;
+}
+/* 秋主题颜色 */
+body.fall {
+  --body-color: #fff5f5;
+  --sidebar-color: #fff;
+  --sidebar-text-color: #fff;
+  --primary-color: #ff9999;
+  --primary-color-light: #ffcccc;
+  --deep-color: #f0e4e4;
+  --toggle-color: #ddd;
+  --label-color: #fafafa;
+  --text-color: #707070;
+  --text-color-2: #fff;
+}
+/* 冬主题颜色 */
+body.winter {
+  --body-color: #edf2fe;
+  --sidebar-color: #fff;
+  --sidebar-text-color: #fff;
+  --primary-color: #73a9de;
+  --primary-color-light: #bbdbfc;
+  --deep-color: #dbe1e8;
+  --toggle-color: #ddd;
+  --label-color: #fafafa;
+  --text-color: #707070;
+  --text-color-2: #fff;
+}
+
+a {
+  text-decoration: none;
+}
+
+.active {
+  color: var(--color-tint);
+}
+
+/* 自定义滚动条样式 */
+/* 滚动条整体 */
+::-webkit-scrollbar {
+  z-index: 50;
+  width: 8px;
+  height: 8px; /* 水平滚动条 */
+}
+/* 滚动条滑道 */
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+/* 滚动滑块样式 */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  /* background-color: var(--primary-color); */
+  transition: all 0.2s;
+  height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+/* 滚动条的样式，是可以跟 :hover 伪类叠加使用的 */
+/* 滚动条鼠标悬浮时的样式 */
+:hover::-webkit-scrollbar-thumb {
+  transition: all 0.2s;
+}
+/* 滚动条上下的箭头按钮 */
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  display: none;
+}
