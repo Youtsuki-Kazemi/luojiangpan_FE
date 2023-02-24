@@ -1,23 +1,25 @@
 <template>
   <div>
     <main-sidebar>
-      <!-- 内容区域 -->
-      <div class="content">
-        <div class="funtable">
-          <div class="btngroup">
-            <button class="name open" @click="openNameBtn()">名</button>
-            <div class="namebtnlist close">
-              <button>男</button>
-              <button>女</button>
-              <button>地</button>
+      <div slot="content">
+        <!-- 内容区域 -->
+        <div class="content">
+          <div class="funtable">
+            <!-- <div class="btngroup">
+              <button class="name open" @click="openNameBtn()">名</button>
+              <div class="namebtnlist close">
+                <button>男</button>
+                <button>女</button>
+                <button>地</button>
+              </div>
             </div>
+            <div class="btngroup">
+              <button>A</button>
+              <button>B</button>
+            </div> -->
+            <button class="resetbtn" @click="resetContentBtn()" title="清空编辑区域"><i class="iconfont icon-ashbin"></i></button>
           </div>
-          <div class="btngroup">
-            <button>A</button>
-            <button>B</button>
-          </div>
-        </div>
-        <!-- 
+          <!-- 
         <textarea
           class="textarea"
           placeholder="从这里开始"
@@ -28,15 +30,28 @@
           @blur="onBlur($event)"
           maxlength="5000"
         ></textarea> -->
-        <div contenteditable="true" class="textarea" @blur="onBlur($event)" @drop="onDrop($event)" placeholder="默认文字">
-          <!-- {{ text }} -->
-        </div>
-        <!-- <div contenteditable="true" class="textarea" ondragenter="return false;" ondragleave="return false;" ondragover="return false;" @drag="drag($event)">
+          <div contenteditable="true" class="textarea" @blur="onBlur($event)" @drop="onDrop($event)" placeholder="默认文字">
+            <!-- {{ text }} -->
+          </div>
+          <!-- <div contenteditable="true" class="textarea" ondragenter="return false;" ondragleave="return false;" ondragover="return false;" @drag="drag($event)">
           <div>{{ text }}</div>
         </div> -->
-      </div>
-      <div class="save">
-        <div @click="SaveText()" class="savebtn">保存</div>
+        </div>
+        <!-- 操作区域 -->
+        <div class="localsave">
+          <div @click="LocalSaveText()" class="savebtn" title="本地保存">
+            <i class="iconfont icon-save"></i>
+          </div>
+        </div>
+        <div class="save">
+          <div @click="SaveText()" class="savebtn" title="上传云端">
+            <i class="iconfont icon-top-filling"></i>
+          </div>
+        </div>
+        <!-- 其他功能（拖拽菜单） -->
+        <div>
+          <drag-menu></drag-menu>
+        </div>
       </div>
     </main-sidebar>
   </div>
@@ -44,10 +59,11 @@
 
 <script>
 import MainSidebar from "@/components/content/mainSidebar/MainSidebar.vue";
+import DragMenu from "@/components/common/dragmenu/DragMenu.vue";
 
 export default {
   name: "UserWriting",
-  components: { MainSidebar },
+  components: { MainSidebar, DragMenu },
   data() {
     return {
       text: "...",
@@ -73,24 +89,53 @@ export default {
   //     window.localStorage.setItem("TextCache", this.text);
   //   },
   methods: {
-    // 保存按钮操作
+    // 本地保存按钮操作
+    LocalSaveText() {
+      const eve = document.querySelector(".textarea");
+      this.text = eve.innerText;
+      //调用文件下载接口
+      this.$message({ type: "success", showClose: true, offset: 80, message: "文件保存成功" });
+    },
+    // 云端保存按钮操作
     SaveText() {
       if (this.ischange) {
         console.log("保存text");
         const eve = document.querySelector(".textarea");
         this.text = eve.innerText;
-        this.$message({ type: "success", showClose: true, offset: 80, message: "已取到最新内容，可将内容进行储存" });
-        // 进行存储操作后;
+        // 进行内容上传操作
+        this.$message({ type: "success", showClose: true, offset: 80, message: "已将最新内容上传云端" });
+        // 上传操作后;
         this.ischange = false;
       } else {
         this.$message({ type: "error", showClose: true, offset: 80, message: "无最新内容" });
       }
     },
-    // 名称相关事件
+    // 名称按钮相关事件
     // 打开按钮列表
     openNameBtn() {
       const namebtn = document.querySelector(".namebtnlist");
       namebtn.classList.toggle("close");
+    },
+    resetContentBtn() {
+      this.$confirm("确认清空编辑区域的所有内容?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "error",
+      })
+        .then(() => {
+          const eve = document.querySelector(".textarea");
+          eve.innerHTML = "";
+          // this.$message({
+          //   type: "success",
+          //   message: "删除成功!",
+          // });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
     },
     // 内容修改后，文本域失去焦点时
     // onChange(event) {
@@ -140,6 +185,7 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           const a = event.target.children[0];
+          console.log("a=", a);
           if (a.tagName !== "SPAN") return;
         }, 0);
       });
@@ -149,14 +195,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// 内容编辑区域
 .content {
-  margin-top: 100px;
-  padding: 0 70px;
+  // margin-top: 100px;
+  padding: 100px 70px 0;
   position: relative;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 0px);
   overflow: hidden;
   // 按钮框
   .funtable {
+    position: relative;
     width: 100%;
     height: 40px;
     // padding: 5px 0 0;
@@ -192,11 +240,26 @@ export default {
         }
       }
     }
+    .resetbtn {
+      position: absolute;
+      right: 0;
+      width: 50px;
+      height: 40px;
+      color: var(--text-color-2);
+      background-color: var(--primary-color);
+      border: 0;
+      box-shadow: inset 2px 2px 6px #b8c7c9, inset -2px -2px 6px #faffff;
+      &:hover {
+        cursor: pointer;
+        color: var(--text-color);
+        background-color: var(--primary-color-light);
+      }
+    }
   }
   // 文本框
   .textarea {
     position: absolute;
-    top: 40px;
+    top: 140px;
     bottom: 10px;
     left: 70px;
     right: 70px;
@@ -216,6 +279,8 @@ export default {
     overflow: auto;
   }
 }
+// 功能按钮区域
+// 保存按钮
 .save {
   position: absolute;
   right: 20px;
@@ -226,15 +291,64 @@ export default {
     line-height: 40px;
     border-radius: 6px;
     text-align: center;
-    color: var(--sidebar-color);
+    color: var(--text-color-2);
     background-color: var(--primary-color);
     cursor: pointer;
     transition: var(--tran-03);
+    i {
+      display: inline;
+    }
     &:hover {
       width: 80px;
-      color: var(--text-color);
+      // color: var(--text-color);
       background-color: var(--primary-color-light);
+      i {
+        display: none;
+      }
+      &::after {
+        content: "上传";
+        color: var(--text-color);
+      }
     }
   }
 }
+.localsave {
+  position: absolute;
+  right: 20px;
+  bottom: 100px;
+  .savebtn {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 6px;
+    text-align: center;
+    color: var(--text-color-2);
+    background-color: var(--primary-color);
+    cursor: pointer;
+    transition: var(--tran-03);
+    i {
+      display: inline;
+    }
+    &:hover {
+      width: 80px;
+      // color: var(--text-color);
+      background-color: var(--primary-color-light);
+      i {
+        display: none;
+      }
+      &::after {
+        content: "保存";
+        color: var(--text-color);
+      }
+    }
+  }
+}
+// .dragmenu {
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   top: 0;
+//   bottom: 0;
+//   background-color: #00000050;
+// }
 </style>

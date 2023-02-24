@@ -27,42 +27,14 @@ import { postAdminLoginAPI } from "@/api/admin.js";
 export default {
   name: "AdminLogin",
   data() {
-    // 定义校验规则(可另外封装出去)
-    const validateNum = (rule, value, callback) => {
-      let reg = /^[a-zA-Z0-9]{4,10}$/;
-      if (value === "") {
-        callback(new Error("请输入账号"));
-      } else if (!reg.test(value)) {
-        callback(new Error("请输入4-10位账号"));
-      } else {
-        callback();
-      }
-    };
-    const validatePass = (rule, value, callback) => {
-      // let pass2 = /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]/;
-      let pass = /^\S*(?=\S{6,12})(?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[!@#$%^&*? ])\S*$/;
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else if (!pass.test(value)) {
-        callback(new Error("请输入6-12位包含大小写字母及特殊符号的密码"));
-      } else {
-        callback();
-      }
-    };
     return {
       form: {
         loginnum: "",
         password: "",
       },
       loginRules: {
-        loginnum: [
-          // { required: true, message: "请输入账号", trigger: "blur" },
-          { validator: validateNum, trigger: "blur" },
-        ],
-        password: [
-          // { required: true, message: "请输入密码", trigger: "blur" },
-          { validator: validatePass, trigger: "blur" },
-        ],
+        loginnum: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
       ifdisabled: true,
     };
@@ -74,11 +46,12 @@ export default {
         if (valid) {
           // alert("提交成功!");
           this.postAdminLogin(this.form.loginnum, this.form.password);
+          this.disabledBtn(); // 切换按钮
         } else {
-          console.log("提交失败!!");
+          // console.log("提交失败!!");
           this.$message({ type: "error", showClose: true, offset: 80, message: "请填写正确信息!" });
           this.disabledBtn(); // 切换按钮
-          return false;
+          // return false;
         }
       });
     },

@@ -39,28 +39,35 @@
     </nav>
     <section class="home">
       <!-- 内容区域 -->
-      <slot name="content"></slot>
+      <slot name="sidecontent"></slot>
+      <footer>
+        <div>
+          <div>公安备案号11020304050678|京ICP备12345678号|经营性网站备案信息|北京互联网违法和不良信息举报中心</div>
+          <div>家长监护|网络110报警服务|中国互联网举报中心|账号管理规范|版权与免责声明|版权申诉|出版物许可证|营业执照</div>
+          <div>©2022-2023XX技术有限公司</div>
+        </div>
+      </footer>
     </section>
     <!-- 主题切换菜单 close -->
     <div class="changetheme close" title="主题切换">
       <div v-if="!isthememeneopen" class="theme-toggle" @click="themeMenu">
-        <i class="iconfont icon-layout icon" slot="item-icon"></i>
+        <i class="iconfont icon-layout icon"></i>
       </div>
       <div v-else class="theme-toggle" @click="themeMenu">
-        <i class="iconfont icon-close icon" slot="item-icon"></i>
+        <i class="iconfont icon-close icon"></i>
       </div>
       <ul class="theme-menu">
         <li title="春" @click="changeSpring">
-          <i class="iconfont icon-flower2e icon" slot="item-icon"></i>
+          <i class="iconfont icon-flower2e icon"></i>
         </li>
         <li title="夏" @click="changeSummer">
-          <i class="iconfont icon-sun icon" slot="item-icon"></i>
+          <i class="iconfont icon-sun icon"></i>
         </li>
         <li title="秋" @click="changeFall">
-          <i class="iconfont icon-Leaves icon" slot="item-icon"></i>
+          <i class="iconfont icon-Leaves icon"></i>
         </li>
         <li title="冬" @click="changeWinter">
-          <i class="iconfont icon-snow icon" slot="item-icon"></i>
+          <i class="iconfont icon-snow icon"></i>
         </li>
       </ul>
     </div>
@@ -77,7 +84,7 @@ export default {
     };
   },
   mounted() {
-    // 是否显示侧边栏
+    // 检测是否显示侧边栏
     const sidbar = window.sessionStorage.getItem("sidbar");
     if (sidbar === "open") {
       this.ifClose = false;
@@ -89,7 +96,7 @@ export default {
     // body.className = theme;
   },
   methods: {
-    // 主题菜单
+    // 侧边栏
     toggleClick() {
       const body = document.querySelector("body");
       const sidebar = body.querySelector("nav");

@@ -45,8 +45,14 @@ const routes = [
     component: Login,
   },
   {
+    path: "/user",
+    // name: "user",
+    component: UserIndex,
+    children: [],
+  },
+  {
     path: "/user/:userid",
-    name: "user",
+    // name: "user",
     component: UserIndex,
     children: [],
   },

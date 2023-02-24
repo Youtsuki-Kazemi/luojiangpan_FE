@@ -113,7 +113,7 @@ export default {
     },
   },
   methods: {
-    // ==数据列表操作
+    // ==数据列表操作==
     // 获取选择每页几条
     handleSizeChange(val) {
       this.pageSize = val;
@@ -132,12 +132,12 @@ export default {
       this.formInline = { nickname: "" }; //重置formInline对象
       this.getuserlist(this.formInline);
     },
-    // ==新增/编辑表单操作
+    // ==新增/编辑表单操作==
     // 打开表单
     openAddUser() {
       this.ifadduser = true;
       // 清空默认值
-      this.addUserform = { uid: "-1", nickname: "", sex: 0, mobile: "", email: "" };
+      this.addUserform = { uid: -1, nickname: "", sex: 0, mobile: "", email: "" };
       if (this.ifaddinfo) {
         // 根据是否生成校验，是：重置表单验证
         this.$refs["addUserform"].resetFields();
@@ -162,7 +162,7 @@ export default {
         }
       });
     },
-    // ==单行数据操作
+    // ==单行数据操作==
     // 编辑（打开表单）
     handleEdit(index, row) {
       this.ifadduser = false;
@@ -192,7 +192,7 @@ export default {
           });
         });
     },
-    // ==接口操作
+    // ==接口操作==
     // 调用请求数据接口
     getuserlist(params) {
       // console.log("调用更新数据接口,", params);
@@ -200,13 +200,14 @@ export default {
         .then((res) => {
           // console.log(res);
           if (res.code !== 200) return this.$message({ type: "error", showClose: true, offset: 80, message: res.msg });
-          this.$message({ type: "success", showClose: true, offset: 80, message: res.msg });
+          // this.$message({ type: "success", showClose: true, offset: 80, message: res.msg });
           this.tableData = res.data; //获取数据
           // 部分数据格式化处理(不要修改原数据)
           this.tableData.forEach((item) => {
             item.sex === 1 ? (item.sex_text = "男") : item.sex === 2 ? (item.sex_text = "女") : (item.sex_text = "未知");
           });
           this.total = res.total; //获取数据总数
+          if (this.total / this.pageSize < this.currentPage && this.currentPage > 1) return (this.currentPage -= 1); // 当前总数除以每页数的结果小于当前页数，把页数减一
         })
         .catch((err) => {
           // console.log(err);
@@ -216,12 +217,17 @@ export default {
     // 调用新增/编辑接口
     postuserEdit(row) {
       // console.log(row);
-      postAdminUserSetAPI(row).then((res) => {
-        // console.log(res.msg);
-        if (res.code !== 200) return this.$message({ type: "error", showClose: true, offset: 80, message: res.msg });
-        this.$message({ type: "success", showClose: true, offset: 80, message: res.msg });
-        this.getuserlist(); // 更新数据
-      });
+      postAdminUserSetAPI(row)
+        .then((res) => {
+          // console.log(res.msg);
+          if (res.code !== 200) return this.$message({ type: "error", showClose: true, offset: 80, message: res.msg });
+          this.$message({ type: "success", showClose: true, offset: 80, message: res.msg });
+          this.getuserlist(this.formInline); // 更新数据
+        })
+        .catch((err) => {
+          // console.log(err);
+          this.$message({ type: "error", showClose: true, offset: 80, message: "请求超时，请稍后重试" });
+        });
     },
     // 调用删除接口
     handleDelete(index, row) {
@@ -231,11 +237,11 @@ export default {
           // console.log(res.msg);
           if (res.code !== 200) return this.$message({ type: "error", showClose: true, offset: 80, message: res.msg });
           this.$message({ type: "success", showClose: true, offset: 80, message: res.msg });
-          this.getuserlist(); // 更新数据
+          this.getuserlist(this.formInline); // 更新数据
         })
         .catch((err) => {
           // console.log(err);
-          this.$message({ type: "error", showClose: true, offset: 80, message: "登录超时，请稍后重试" });
+          this.$message({ type: "error", showClose: true, offset: 80, message: "请求超时，请稍后重试" });
         });
     },
   },

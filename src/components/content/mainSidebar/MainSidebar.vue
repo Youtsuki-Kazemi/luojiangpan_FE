@@ -39,7 +39,7 @@
           <i class="iconfont icon-edit-filling icon" slot="item-icon-active"></i>
           <span class="text nav-text" slot="item-text">创作</span>
         </side-bar-item>
-        <side-bar-item :path="'/user/' + this.userinfo.id" title="个人中心">
+        <side-bar-item :path="'/user/' + ownid" title="个人中心">
           <i class="iconfont icon-user icon" slot="item-icon"></i>
           <i class="iconfont icon-user-filling icon" slot="item-icon-active"></i>
           <span class="text nav-text" slot="item-text">个人中心</span>
@@ -54,14 +54,15 @@
     <!-- 退出登录按钮 -->
     <div slot="logoutbtn">
       <div v-if="hasUser">
-        <li class="nav-link" @click="LogoutClick" title="退出登录">
+        <li class="nav-link" @click="deleteConfirm" title="退出登录">
           <i class="iconfont icon-sign-out icon"></i>
           <span class="text nav-text">退出登录</span>
         </li>
       </div>
     </div>
-    <div slot="content">
-      <slot></slot>
+    <div slot="sidecontent">
+      <!-- 内容 -->
+      <slot name="content"></slot>
     </div>
   </side-bar>
 </template>
@@ -71,6 +72,14 @@ import SideBar from "@/components/common/sidebar/SideBar";
 import SideBarItem from "@/components/common/sidebar/SideBarItem";
 export default {
   name: "MainSidebar",
+  props: {
+    ownid: {
+      type: String,
+      default() {
+        return "";
+      },
+    },
+  },
   data() {
     return {
       userinfo: {},
@@ -123,6 +132,27 @@ export default {
       this.$router.push({
         path: "/index",
       });
+    },
+    // 退出登录二次确定弹框
+    deleteConfirm() {
+      this.$confirm("是否退出登录?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.LogoutClick(); //调用退出登录方法
+          // this.$message({
+          //   type: "success",
+          //   message: "删除成功!",
+          // });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
     },
   },
 };

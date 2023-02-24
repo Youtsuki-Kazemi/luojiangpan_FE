@@ -62,13 +62,37 @@ export default {
   name: "Login",
   data() {
     // 定义验证
-    var validatePass = (rule, value, callback) => {
-      if (this.registerRuleForm.registercheckpwd !== "") {
-        this.$refs.registerRuleForm.validateField("registercheckpwd");
+    const validateNum = (rule, value, callback) => {
+      let reg = /^[a-zA-Z0-9]{4,10}$/;
+      if (value === "") {
+        callback(new Error("请输入账号"));
+      } else if (!reg.test(value)) {
+        callback(new Error("请输入4-10位账号"));
+      } else {
+        callback();
       }
-      callback();
     };
-    var validateCheckPass = (rule, value, callback) => {
+    const validatePass = (rule, value, callback) => {
+      // let pass2 = /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]/;
+      let pass = /^\S*(?=\S{6,12})(?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[!@#$%^&*? ])\S*$/;
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else if (!pass.test(value)) {
+        callback(new Error("请输入6-12位包含大小写字母及特殊符号的密码"));
+      } else {
+        if (this.registerRuleForm.registercheckpwd !== "") {
+          this.$refs.registerRuleForm.validateField("registercheckpwd");
+        }
+        callback();
+      }
+    };
+    // const validatePass = (rule, value, callback) => {
+    //   if (this.registerRuleForm.registercheckpwd !== "") {
+    //     this.$refs.registerRuleForm.validateField("registercheckpwd");
+    //   }
+    //   callback();
+    // };
+    const validateCheckPass = (rule, value, callback) => {
       if (value === this.registerRuleForm.registerpwd) {
         callback();
       } else {
@@ -162,14 +186,14 @@ export default {
           // 跳转到个人中心
           // (需要修改为跳转到访问页)
           this.$router.push({
-            path: "/user/" + res.id,
+            path: "/user",
           });
         })
         .catch((err) => {
-          // console.log(err);
+          console.log(err);
           this.$message({ type: "error", showClose: true, offset: 80, message: "登录超时，请稍后重试" });
-          this.disabledBtn(); // 切换按钮
         });
+      this.disabledBtn(); // 切换按钮
     },
     // 注册请求
     postRegister(login_num, login_pwd, nickname) {
@@ -187,8 +211,8 @@ export default {
         .catch((err) => {
           // console.log(err);
           this.$message({ type: "error", showClose: true, offset: 80, message: "链接超时，请稍后重试" });
-          this.disabledBtn(); // 切换按钮
         });
+      this.disabledBtn(); // 切换按钮
     },
     // 事件监听
     gotoHome() {

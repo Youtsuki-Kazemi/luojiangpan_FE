@@ -30,6 +30,8 @@ export default {
   computed: {
     isActive() {
       //判断当前活跃路径
+      // console.log("当前按钮路径:", this.path);
+      // console.log("当前路径this.$route.path:", this.$route.path.indexOf(this.path));
       return this.$route.path.indexOf(this.path) !== -1;
       //   return this.$route.path === this.path;
     },
@@ -41,7 +43,7 @@ export default {
   methods: {
     // 链接跳转
     itemClick() {
-      this.$router.replace(this.path);
+      this.$router.push(this.path);
     },
   },
 };

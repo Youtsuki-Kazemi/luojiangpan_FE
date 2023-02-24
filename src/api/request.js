@@ -23,7 +23,9 @@ export function request(config) {
       if (uToken) {
         //在请求头里面添加一个头信息叫做 TOKEN ==》jsessionid(token)
         //后台通过token作为key值可以在redis中获得loginUser的信息
-        config.headers["TOKEN"] = uToken;
+        // config.headers["TOKEN"] = uToken;
+        // 方法2
+        config.headers.Authorization = uToken;
       }
       return config;
     },

@@ -1,28 +1,30 @@
 <template>
   <div>
     <main-sidebar>
-      <div class="indexcontent">
-        我是index页
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
-        <div class="text">Dashboard Sidebar</div>
+      <div slot="content">
+        <div class="indexcontent">
+          我是index页
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+          <div class="text">Dashboard Sidebar</div>
+        </div>
       </div>
     </main-sidebar>
   </div>
@@ -38,6 +40,7 @@ export default {
 
 <style lang="less" scoped>
 .indexcontent {
+  height: 80vh;
   padding: 40px;
   color: var(--text-color);
 }
